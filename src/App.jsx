@@ -13,6 +13,7 @@ import { PassportCallback } from "./pages/public/Login/PassportCallback";
 import Register from "./pages/public/Login/Register";
 import VerifyUser from "./pages/public/Login/VerifyUser";
 import UserDashboard from "./pages/user/UserDashboard/UserDashboard";
+import Posts from "./pages/public/Posts/Posts"
 
 export default function App() {
   return (
@@ -26,6 +27,9 @@ export default function App() {
               of them to render at a time
             */}
       <Switch>
+      <Route exact path="/posts">
+          <Posts />
+        </Route>
         <Route exact path="/">
           <Home />
         </Route>

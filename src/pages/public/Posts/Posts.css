@@ -1,0 +1,30 @@
+.posts-title{
+    text-align: center;
+    font-weight: bold;
+}
+
+.posts-list{
+    text-align: center;
+}
+
+.post-item {
+    background-color: #0000ff;
+    color: #ffffff;
+    font-weight: bold;
+    margin: 20px 150px;
+    padding: 50px;
+    border-radius: 5px;
+}
+
+.post-form {
+    margin: 0px 150px;
+}
+
+.button-and-color {
+    display: flex;
+}
+
+.color-picker {
+    margin-left: 10px;
+    width: 50px;
+}
