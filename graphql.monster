@@ -1,0 +1,6 @@
+@create("user")
+@all(filter:"user_every.id={{userId}}")
+type Post @model {
+    title: String
+    color: String
+}

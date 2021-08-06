@@ -1,19 +1,57 @@
 import React, {useState} from 'react'
 import { Button, Form } from 'react-bootstrap'
+import { gql } from 'graphql.macro'
+import { useMutation, useQuery } from '@apollo/client'
+import { useSelector } from 'react-redux';
+import { selectUser } from '../../../app/reducers/userSlice';
 import './Posts.css'
-const Posts = () => {
 
+const CREATE_MUTATION = gql`
+    mutation CreatePost($title: String, $color:String) {
+    createPost(title: $title, color: $color) {
+        id
+        title,
+        color
+    }
+}`
+
+const ALL_POST_QUERY = gql`query AllPost($orderBy: PostOrderBy, $filter: PostFilter){
+    allPost(orderBy: $orderBy, filter:$filter){
+        id,
+        title,
+        color
+    }
+  }`
+
+const Posts = () => {
+    const user = useSelector(selectUser)
     // const [currentValue, setCurrentValue] = useState(intialValue)
     const [posts, setPosts] = useState([
     ])
 
     const [newPostTitle, setNewPostTitle] = useState("I'm feeling pretty good")
     const [newPostColor, setNewPostColor] = useState('#0000ff')
+    const [createPost, { error: createError }] = useMutation(CREATE_MUTATION)
+
+    const { loading } = useQuery(ALL_POST_QUERY, {
+        onCompleted: (data) => {
+            setPosts([...data.allPost])
+        }, variables : {
+            orderBy: 'createdAt_desc',
+            filter: {
+                user_every: {
+                    id: user?.id
+                }
+            }
+        }
+    })
 
     const onAddPost = () => {
         if(newPostTitle.length > 2){
-            setPosts([{title: newPostTitle, color: newPostColor}, ...posts])
+            const newPost = {title: newPostTitle, color: newPostColor}
+            setPosts([newPost, ...posts])
             setNewPostTitle('')
+            createPost({variables: newPost})
             console.log('Add Post Click', posts)
         }
     }
